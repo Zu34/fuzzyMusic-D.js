@@ -8,15 +8,29 @@ module.exports = {
   async execute(interaction, client) {
     const queue = client.distube.getQueue(interaction.guildId);
 
-    if (!queue) {
-      return interaction.reply({ content: '❌ Nothing is playing right now!', ephemeral: true });
+    if (!queue || !queue.playing) {
+      return interaction.reply({
+        content: '❌ Nothing is currently playing.',
+        ephemeral: true,
+      });
     }
 
     if (queue.paused) {
-      return interaction.reply({ content: '⏸️ Music is already paused.', ephemeral: true });
+      return interaction.reply({
+        content: '⏸️ The music is already paused.',
+        ephemeral: true,
+      });
     }
 
-    queue.pause();
-    await interaction.reply('⏸️ Music paused.');
+    try {
+      queue.pause();
+      return interaction.reply('⏸️ Music paused.');
+    } catch (err) {
+      console.error('Pause error:', err);
+      return interaction.reply({
+        content: '❌ Failed to pause the music.',
+        ephemeral: true,
+      });
+    }
   },
 };
