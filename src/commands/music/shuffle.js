@@ -1,4 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
+const isDJ = require('../../utils/isDJ');
+const shuffleArray = require('../../utils/shuffle');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -12,17 +14,16 @@ module.exports = {
       return interaction.reply({ content: '❌ Not enough songs in the queue to shuffle.', ephemeral: true });
     }
 
-    const currentSong = queue.songs[0];
-    const upcomingSongs = queue.songs.slice(1);
-
-    // Fisher–Yates shuffle algorithm
-    for (let i = upcomingSongs.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [upcomingSongs[i], upcomingSongs[j]] = [upcomingSongs[j], upcomingSongs[i]];
+    if (!isDJ(interaction.member)) {
+      return interaction.reply({
+        content: '❌ You must be a DJ or have Administrator permissions to use this command.',
+        ephemeral: true
+      });
     }
 
-    // Replace queue songs with current + shuffled upcoming
-    queue.songs = [currentSong, ...upcomingSongs];
+    const currentSong = queue.songs[0];
+    const shuffled = shuffleArray(queue.songs.slice(1));
+    queue.songs = [currentSong, ...shuffled];
 
     return interaction.reply('🔀 Queue shuffled!');
   },
