@@ -1,16 +1,16 @@
-// src/models/QueueHistory.js
-const { Schema, model } = require('mongoose');
 
-const songSchema = new Schema({
-  title: String,
-  url: String,
-  requestedBy: String,
-  playedAt: { type: Date, default: Date.now },
-});
+const mongoose = require('mongoose');
 
-const queueHistorySchema = new Schema({
+const queueHistorySchema = new mongoose.Schema({
   guildId: String,
-  songs: [songSchema],
+  userId: String,
+  track: {
+    name: String,
+    url: String,
+    thumbnail: String,
+    duration: String,
+  },
+  timestamp: { type: Date, default: Date.now },
 });
 
-module.exports = model('QueueHistory', queueHistorySchema);
+module.exports = mongoose.model('QueueHistory', queueHistorySchema);
