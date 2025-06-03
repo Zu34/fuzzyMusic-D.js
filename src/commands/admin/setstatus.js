@@ -1,5 +1,5 @@
-// /src/commands/admin/setstatus.js
-const { SlashCommandBuilder, ActivityType } = require('discord.js');
+// src/commands/admin/setstatus.js
+const { SlashCommandBuilder, ActivityType, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -31,10 +31,13 @@ module.exports = {
       option.setName('activity')
         .setDescription('The activity message')
         .setRequired(true)
-    ),
+    )
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
   async execute(interaction, client) {
-    if (!interaction.member.permissions.has('Administrator')) {
+    // No need for manual permission check due to setDefaultMemberPermissions,
+    // but double-checking doesn't hurt if you want explicit error message:
+    if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
       return interaction.reply({ content: '❌ Only administrators can use this command.', ephemeral: true });
     }
 
@@ -46,22 +49,19 @@ module.exports = {
       Playing: ActivityType.Playing,
       Listening: ActivityType.Listening,
       Watching: ActivityType.Watching,
-      Competing: ActivityType.Competing
+      Competing: ActivityType.Competing,
     };
 
     try {
-      client.user.setPresence({
+      await client.user.setPresence({
         status,
-        activities: [{
-          name: activityMessage,
-          type: typeMap[activityType]
-        }]
+        activities: [{ name: activityMessage, type: typeMap[activityType] }],
       });
 
-      return interaction.reply(`✅ Status: **${status}**, Activity: **${activityType} ${activityMessage}**`);
-    } catch (err) {
-      console.error('Failed to set status/activity:', err);
+      return interaction.reply(`✅ Status updated to **${status}**, Activity set to **${activityType} ${activityMessage}**`);
+    } catch (error) {
+      console.error('Failed to set status/activity:', error);
       return interaction.reply({ content: '❌ Failed to set status or activity.', ephemeral: true });
     }
-  }
+  },
 };

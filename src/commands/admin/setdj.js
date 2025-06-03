@@ -1,3 +1,5 @@
+// src/commands/admin/setdj.js
+
 const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
