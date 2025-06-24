@@ -1,7 +1,7 @@
 // src/commands/music/stop.js
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const isDJ = require('../../utils/isDJ');
-const QueueHistory = require('../../models/queuehistory');
+const QueueHistory = require('../../models/QueueHistory');
 
 module.exports = {
   data: new SlashCommandBuilder()

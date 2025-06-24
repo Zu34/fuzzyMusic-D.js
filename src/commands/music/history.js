@@ -1,6 +1,6 @@
 // src/commands/music/history.js
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const QueueHistory = require('../../models/queuehistory');
+const QueueHistory = require('../../models/QueueHistory');
 
 module.exports = {
   data: new SlashCommandBuilder()
