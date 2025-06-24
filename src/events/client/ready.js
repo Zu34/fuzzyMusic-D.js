@@ -1,6 +1,7 @@
 
-const { loadAllowedVoiceChannels } = require('../utils/voiceChannelConfig');
-const { loadPrefixes } = require('../utils/prefixConfig');
+const { loadAllowedVoiceChannels } = require('../../utils/voiceChannelConfig');
+const { loadPrefixes } = require('../../utils/prefixConfig');
+
 module.exports = {
     name: 'ready',
     once: true,
