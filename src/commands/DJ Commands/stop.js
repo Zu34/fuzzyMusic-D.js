@@ -1,4 +1,4 @@
-// src/commands/DJCommands/stophere.js
+// src/commands/DJCommands/stop.js
 const { SlashCommandBuilder } = require('discord.js');
 const { isDJ } = require('../../utils/isDJ');
 const { voteSkips } = require('../../utils/voteState');

@@ -1,6 +1,6 @@
 // src/commands/admin/clearhistory.js
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
-const QueueHistory = require('../../models/queuehistory');
+const QueueHistory = require('../../models/QueueHistory');
 
 module.exports = {
   data: new SlashCommandBuilder()
